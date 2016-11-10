@@ -2,6 +2,7 @@ package com.example.sandeep.samplegreendao.db.provider;
 
 import com.example.sandeep.samplegreendao.db.Student;
 import com.example.sandeep.samplegreendao.db.Teacher;
+import com.example.sandeep.samplegreendao.result.FeedBackDetails;
 
 import java.util.List;
 
@@ -13,10 +14,12 @@ public interface StudentProvider {
 
     boolean addOrUpdateStudentData(Student student);
 
-    List<Student> loadStudentData();
+    List<Student> getStudentData();
 
     boolean addOrUpdateTeachersData(Teacher teacher);
 
-    List<Teacher> loadTeacherData();
+    List<Teacher> getTeacherData();
+
+    List<FeedBackDetails> getFeedbackData();
 
 }

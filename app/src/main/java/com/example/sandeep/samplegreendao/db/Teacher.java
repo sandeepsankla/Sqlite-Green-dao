@@ -9,27 +9,37 @@ import org.greenrobot.greendao.annotation.*;
  */
 @Entity
 public class Teacher {
+
+    @Id(autoincrement = true)
+    private Long id;
     private String name;
     private String subject;
     private String rating;
-
-    @Id
     private String teacher_id;
 
     @Generated
     public Teacher() {
     }
 
-    public Teacher(String teacher_id) {
-        this.teacher_id = teacher_id;
+    public Teacher(Long id) {
+        this.id = id;
     }
 
     @Generated
-    public Teacher(String name, String subject, String rating, String teacher_id) {
+    public Teacher(Long id, String name, String subject, String rating, String teacher_id) {
+        this.id = id;
         this.name = name;
         this.subject = subject;
         this.rating = rating;
         this.teacher_id = teacher_id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

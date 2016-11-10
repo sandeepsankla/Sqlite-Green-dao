@@ -1,5 +1,6 @@
 package com.example.sandeep.samplegreendao.feedback;
 
+import android.content.Intent;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
@@ -15,6 +16,7 @@ import com.example.sandeep.samplegreendao.dagger.AppComponent;
 import com.example.sandeep.samplegreendao.dagger.MyApplication;
 import com.example.sandeep.samplegreendao.feedback.dagger.DaggerFeedBackComponent;
 import com.example.sandeep.samplegreendao.feedback.dagger.FeedBackModule;
+import com.example.sandeep.samplegreendao.result.ResultActivity;
 
 import javax.inject.Inject;
 
@@ -26,9 +28,9 @@ public class StudentActivity extends AppCompatActivity implements StudentView {
 
     @Inject
     StudentPresenter presenter;
+
     @Bind(R.id.name_text)
     EditText nameText;
-
     @Bind(R.id.father_name)
     EditText fatherNameText;
     @Bind(R.id.class_text)
@@ -61,7 +63,6 @@ public class StudentActivity extends AppCompatActivity implements StudentView {
     TextInputLayout idLayout;
     @Bind(R.id.rating_text_layout)
     TextInputLayout ratingLayout;
-
     @Bind(R.id.appBar)
     AppBarLayout appBarLayout;
     @Bind(R.id.submit_fab)
@@ -98,7 +99,6 @@ public class StudentActivity extends AppCompatActivity implements StudentView {
         }
     }
 
-
     @Override
     public void initAppBarLayout() {
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -118,7 +118,7 @@ public class StudentActivity extends AppCompatActivity implements StudentView {
 
     @Override
     public void navigateToResultActivity() {
-
+        startActivity(new Intent(StudentActivity.this, ResultActivity.class));
     }
 
     private void setVisibility(boolean visible) {

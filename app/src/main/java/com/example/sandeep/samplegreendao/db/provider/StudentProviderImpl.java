@@ -4,7 +4,9 @@ import com.example.sandeep.samplegreendao.db.Student;
 import com.example.sandeep.samplegreendao.db.StudentDao;
 import com.example.sandeep.samplegreendao.db.Teacher;
 import com.example.sandeep.samplegreendao.db.TeacherDao;
+import com.example.sandeep.samplegreendao.result.FeedBackDetails;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,8 +29,9 @@ public class StudentProviderImpl implements StudentProvider {
     }
 
     @Override
-    public List<Student> loadStudentData() {
-        return studentDao.loadAll();
+    public List<Student> getStudentData() {
+        int count = (int) studentDao.count();
+        return studentDao.queryBuilder().where(StudentDao.Properties.Id.eq(count)).list();
     }
 
     @Override
@@ -37,7 +40,23 @@ public class StudentProviderImpl implements StudentProvider {
     }
 
     @Override
-    public List<Teacher> loadTeacherData() {
+    public List<Teacher> getTeacherData() {
         return teacherDao.loadAll();
+    }
+
+    @Override
+    public List<FeedBackDetails> getFeedbackData(){
+        List<Student> studentList = getStudentData();
+        List<Teacher> teacherList = new ArrayList<>();
+        List<FeedBackDetails> data = new ArrayList<>();
+
+        for(int i=0; i<studentList.size(); i++){
+            teacherList.add(studentList.get(i).get_id());
+            FeedBackDetails details= new FeedBackDetails(studentList.get(i).getName(),
+                    teacherList.get(i).getName(),teacherList.get(i).getRating());
+            data.add(details);
+        }
+        return data;
+
     }
 }

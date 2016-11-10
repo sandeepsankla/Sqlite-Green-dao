@@ -13,7 +13,7 @@ import org.greenrobot.greendao.database.DatabaseStatement;
 /** 
  * DAO for table "TEACHER".
 */
-public class TeacherDao extends AbstractDao<Teacher, String> {
+public class TeacherDao extends AbstractDao<Teacher, Long> {
 
     public static final String TABLENAME = "TEACHER";
 
@@ -22,10 +22,11 @@ public class TeacherDao extends AbstractDao<Teacher, String> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Name = new Property(0, String.class, "name", false, "NAME");
-        public final static Property Subject = new Property(1, String.class, "subject", false, "SUBJECT");
-        public final static Property Rating = new Property(2, String.class, "rating", false, "RATING");
-        public final static Property Teacher_id = new Property(3, String.class, "teacher_id", true, "TEACHER_ID");
+        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
+        public final static Property Name = new Property(1, String.class, "name", false, "NAME");
+        public final static Property Subject = new Property(2, String.class, "subject", false, "SUBJECT");
+        public final static Property Rating = new Property(3, String.class, "rating", false, "RATING");
+        public final static Property Teacher_id = new Property(4, String.class, "teacher_id", false, "TEACHER_ID");
     }
 
 
@@ -41,10 +42,11 @@ public class TeacherDao extends AbstractDao<Teacher, String> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"TEACHER\" (" + //
-                "\"NAME\" TEXT," + // 0: name
-                "\"SUBJECT\" TEXT," + // 1: subject
-                "\"RATING\" TEXT," + // 2: rating
-                "\"TEACHER_ID\" TEXT PRIMARY KEY NOT NULL );"); // 3: teacher_id
+                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
+                "\"NAME\" TEXT," + // 1: name
+                "\"SUBJECT\" TEXT," + // 2: subject
+                "\"RATING\" TEXT," + // 3: rating
+                "\"TEACHER_ID\" TEXT);"); // 4: teacher_id
     }
 
     /** Drops the underlying database table. */
@@ -57,24 +59,29 @@ public class TeacherDao extends AbstractDao<Teacher, String> {
     protected final void bindValues(DatabaseStatement stmt, Teacher entity) {
         stmt.clearBindings();
  
+        Long id = entity.getId();
+        if (id != null) {
+            stmt.bindLong(1, id);
+        }
+ 
         String name = entity.getName();
         if (name != null) {
-            stmt.bindString(1, name);
+            stmt.bindString(2, name);
         }
  
         String subject = entity.getSubject();
         if (subject != null) {
-            stmt.bindString(2, subject);
+            stmt.bindString(3, subject);
         }
  
         String rating = entity.getRating();
         if (rating != null) {
-            stmt.bindString(3, rating);
+            stmt.bindString(4, rating);
         }
  
         String teacher_id = entity.getTeacher_id();
         if (teacher_id != null) {
-            stmt.bindString(4, teacher_id);
+            stmt.bindString(5, teacher_id);
         }
     }
 
@@ -82,60 +89,68 @@ public class TeacherDao extends AbstractDao<Teacher, String> {
     protected final void bindValues(SQLiteStatement stmt, Teacher entity) {
         stmt.clearBindings();
  
+        Long id = entity.getId();
+        if (id != null) {
+            stmt.bindLong(1, id);
+        }
+ 
         String name = entity.getName();
         if (name != null) {
-            stmt.bindString(1, name);
+            stmt.bindString(2, name);
         }
  
         String subject = entity.getSubject();
         if (subject != null) {
-            stmt.bindString(2, subject);
+            stmt.bindString(3, subject);
         }
  
         String rating = entity.getRating();
         if (rating != null) {
-            stmt.bindString(3, rating);
+            stmt.bindString(4, rating);
         }
  
         String teacher_id = entity.getTeacher_id();
         if (teacher_id != null) {
-            stmt.bindString(4, teacher_id);
+            stmt.bindString(5, teacher_id);
         }
     }
 
     @Override
-    public String readKey(Cursor cursor, int offset) {
-        return cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3);
+    public Long readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }    
 
     @Override
     public Teacher readEntity(Cursor cursor, int offset) {
         Teacher entity = new Teacher( //
-            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // name
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // subject
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // rating
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // teacher_id
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // name
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // subject
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // rating
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // teacher_id
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, Teacher entity, int offset) {
-        entity.setName(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
-        entity.setSubject(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setRating(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setTeacher_id(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setSubject(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setRating(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setTeacher_id(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
      }
     
     @Override
-    protected final String updateKeyAfterInsert(Teacher entity, long rowId) {
-        return entity.getTeacher_id();
+    protected final Long updateKeyAfterInsert(Teacher entity, long rowId) {
+        entity.setId(rowId);
+        return rowId;
     }
     
     @Override
-    public String getKey(Teacher entity) {
+    public Long getKey(Teacher entity) {
         if(entity != null) {
-            return entity.getTeacher_id();
+            return entity.getId();
         } else {
             return null;
         }
@@ -143,7 +158,7 @@ public class TeacherDao extends AbstractDao<Teacher, String> {
 
     @Override
     public boolean hasKey(Teacher entity) {
-        return entity.getTeacher_id() != null;
+        return entity.getId() != null;
     }
 
     @Override
