@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">SampleGreenDao</string>
+    <string name="welcome">Welcome</string>
+    <string name="roll_no">Roll no</string>
+    <string name="standard">Class</string>
+    <string name="dad_name">Dad Name</string>
+    <string name="student_name">Student Name</string>
+    <string name="error_message">Some thing went wrong, Please try again!!</string>
+    <string name="teacher_name">Teacher\'s name</string>
+    <string name="subject">Subject</string>
+    <string name="rating">rating (1-10)</string>
+    <string name="teacher_id">teacher id</string>
 </resources>
