@@ -5,6 +5,7 @@ import org.greenrobot.greendao.generator.DaoGenerator;
 import org.greenrobot.greendao.generator.Entity;
 import org.greenrobot.greendao.generator.Property;
 import org.greenrobot.greendao.generator.Schema;
+import org.greenrobot.greendao.generator.ToMany;
 
 
 public class SampleDaoGenerator {
@@ -34,9 +35,11 @@ public class SampleDaoGenerator {
         student.addStringProperty("f_name");
         student.addStringProperty("s_class");
         student.addStringProperty("name");
+
         Property id = student.addIdProperty().autoincrement().primaryKey().getProperty();
         student.addToOne(teacher,id,"_id");
 
-
+        //Property relStudentId = teacher.addStringProperty("student_id").getProperty();
+        ToMany many =  teacher.addToMany(student, id);
     }
 }

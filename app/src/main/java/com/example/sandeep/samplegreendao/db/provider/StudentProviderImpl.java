@@ -40,8 +40,14 @@ public class StudentProviderImpl implements StudentProvider {
     }
 
     @Override
-    public List<Teacher> getTeacherData() {
-        return teacherDao.loadAll();
+    public List<String> getTeacherData() {
+        List<Teacher> teacherList = teacherDao.loadAll();
+        List<String> nameList = new ArrayList<>();
+        for(int i=0; i<teacherList.size();i++){
+            nameList.add(teacherList.get(i).getName());
+        }
+
+        return  nameList;
     }
 
     @Override
@@ -58,5 +64,22 @@ public class StudentProviderImpl implements StudentProvider {
         }
         return data;
 
+    }
+
+    public List<String> getVoterList(String name){
+        List<Teacher> teacherList = getTeacherData(name);
+        List<Student> studentList = new ArrayList<>();
+        for(int i=0; i<teacherList.size(); i++){
+            studentList.addAll(teacherList.get(i).getStudentList());
+        }
+        List<String> voterList = new ArrayList<>();
+        for(int i=0; i<studentList.size(); i++){
+            voterList.add(studentList.get(i).getName());
+        }
+        return voterList;
+    }
+
+    private List<Teacher> getTeacherData(String name) {
+        return teacherDao.queryBuilder().where(TeacherDao.Properties.Name.eq(name)).list();
     }
 }

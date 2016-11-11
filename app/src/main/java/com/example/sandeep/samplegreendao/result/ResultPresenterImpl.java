@@ -1,6 +1,9 @@
 package com.example.sandeep.samplegreendao.result;
 
+import com.example.sandeep.samplegreendao.db.Teacher;
 import com.example.sandeep.samplegreendao.db.provider.StudentProvider;
+
+import java.util.List;
 
 /**
  * Created by sandeep on 11/9/2016.
@@ -9,11 +12,10 @@ import com.example.sandeep.samplegreendao.db.provider.StudentProvider;
 public class ResultPresenterImpl implements ResultPresenter {
     private ResultView view;
     StudentProvider dataProvider;
-    private String studentName;
 
     public ResultPresenterImpl(ResultView view, StudentProvider studentProvider) {
-            this.view = view;
-            this.dataProvider = studentProvider;
+        this.view = view;
+        this.dataProvider = studentProvider;
     }
 
     @Override
@@ -22,9 +24,24 @@ public class ResultPresenterImpl implements ResultPresenter {
     }
 
     @Override
-    public void onOneRelClicked(String name) {
-        if(dataProvider!=null){
-            dataProvider.getFeedbackData(name);
+    public void onOneRelClicked() {
+        if (dataProvider != null) {
+            List<FeedBackDetails> data = dataProvider.getFeedbackData();
+            view.showDailog(data);
         }
+    }
+
+    @Override
+    public void onManyRelClicked() {
+        if (dataProvider != null) {
+                List<String> teacherList = dataProvider.getTeacherData();
+            view.showTeacherList(teacherList);
+        }
+    }
+
+    @Override
+    public void setSelectedTeacher(String name) {
+        List<String> data = dataProvider.getVoterList(name);
+        view.showVoterList(data);
     }
 }

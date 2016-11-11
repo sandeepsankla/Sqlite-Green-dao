@@ -18,8 +18,10 @@ public interface StudentProvider {
 
     boolean addOrUpdateTeachersData(Teacher teacher);
 
-    List<Teacher> getTeacherData();
+    List<String> getTeacherData();
 
     List<FeedBackDetails> getFeedbackData();
+
+    List<String> getVoterList(String name);
 
 }

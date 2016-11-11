@@ -77,8 +77,6 @@ public class StudentActivity extends AppCompatActivity implements StudentView {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupComponent(MyApplication.get(this).getAppComponent());
-
-
     }
 
     private void setupComponent(AppComponent component) {

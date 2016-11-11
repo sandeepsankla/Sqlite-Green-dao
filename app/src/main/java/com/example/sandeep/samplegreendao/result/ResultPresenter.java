@@ -7,5 +7,9 @@ public interface ResultPresenter {
 
     void onAttach();
 
-    void onOneRelClicked(String name);
+    void onOneRelClicked();
+
+    void onManyRelClicked();
+
+    void setSelectedTeacher(String name);
 }
